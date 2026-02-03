@@ -4,26 +4,26 @@ isLoggedIn = false
 isInMenu = false
 
 Citizen.CreateThread(function()
-	while QBCore == nil do
-		TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
-		Citizen.Wait(200)
-	end
-end)
+    while QBCore == nil do
+        QBCore = exports['qb-core']:GetCoreObject()
+        Citizen.Wait(100)
+    end
 
-RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
-AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
-    isLoggedIn = true
-    PlayerJob = QBCore.Functions.GetPlayerData().job
-end)
+    RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
+    AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+        isLoggedIn = true
+        PlayerJob = QBCore.Functions.GetPlayerData().job
+    end)
+		
+    RegisterNetEvent('QBCore:Client:OnPlayerUnload')
+    AddEventHandler('QBCore:Client:OnPlayerUnload', function()
+        isLoggedIn = false
+    end)
 
-RegisterNetEvent('QBCore:Client:OnPlayerUnload')
-AddEventHandler('QBCore:Client:OnPlayerUnload', function()
-	isLoggedIn = false
-end)
-
-RegisterNetEvent('QBCore:Client:OnJobUpdate')
-AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
-    PlayerJob = JobInfo
+    RegisterNetEvent('QBCore:Client:OnJobUpdate')
+    AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
+        PlayerJob = JobInfo
+    end)
 end)
 
 function DrawText3D(v, text)
